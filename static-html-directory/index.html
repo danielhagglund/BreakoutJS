@@ -4,12 +4,50 @@
     <meta charset="UTF-8">
     <title>Gamedev Canvas Workshop</title>
     <style>
+        .columnEdge {
+            float: left;
+            width: 10%;
+            align-items: center;
+        }
+
+        .columnMiddle {
+            float: left;
+            width: 80%;
+        }
+
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
         * { padding: 0; margin: 0;}
         canvas { background: #eee; display: block; margin: 0 auto}
     </style>
 </head>
 <body>
-    <canvas id="myCanvas" width="480" height="320"></canvas>
+<div class="row">
+    <div class="columnEdge">
+        <button id="leftButton"><--</button>
+    </div>
+    <div class="columnMiddle">
+        <canvas id="myCanvas" width="480" height="320"></canvas>
+    </div>
+    <div class="columnEdge">
+        <button id=rightButton>--></button>
+    </div>
+</div>
 
     <script>
         let canvas = document.getElementById("myCanvas");
@@ -87,6 +125,7 @@
             }
         }
 
+        // Handle key-press events
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
 
@@ -106,6 +145,28 @@
             else if(e.key=="Left" || e.key=="ArrowLeft") {
                 leftPressed= false;
             }
+        }
+
+        // Handle touch events
+        document.getElementById("leftButton").addEventListener("touchstart", leftTouchStart);
+        document.getElementById("rightButton").addEventListener("touchstart", rightTouchStart);
+        document.getElementById("leftButton").addEventListener("touchend", leftTouchEnd);
+        document.getElementById("rightButton").addEventListener("touchend", rightTouchEnd);
+
+        function leftTouchStart() {
+            leftPressed = true;
+        }
+
+        function leftTouchEnd() {
+            leftPressed = false;
+        }
+
+        function rightTouchStart() {
+            rightPressed = true;
+        }
+
+        function rightTouchEnd() {
+            rightPressed = false;
         }
 
         var interval = setInterval(draw,10);
